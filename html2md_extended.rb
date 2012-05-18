@@ -1,9 +1,9 @@
 
 require './html2md_functions.rb'
 
-OUTPUT_DIR  = "C:\\Sites\\jekyll-scripts\\"
-STORY_DIR   = "story_" #"story\\_posts\\"
-MUSINGS_DIR = "musings_" #"musings\\_posts\\"
+OUTPUT_DIR  = "/home/nphillips/Documents/Git/jekyll-scripts/" #"C:\\Sites\\jekyll-scripts\\"
+STORY_DIR   = "story/" #"story\\_posts\\"
+MUSINGS_DIR = "musings/" #"musings\\_posts\\"
 
 
 fileInput = ARGV[0]
@@ -29,8 +29,7 @@ File.open(fileOutput[0], 'w') do |md|
     newMd = stripHTML(text)
   end
   yaml = generateYaml(fileOutput, FILE_IS_STORY)
-  puts yaml
-  newMd = newMd.insert(yaml, 0)
+  newMd = newMd.insert(0, yaml)
 
   md.puts(newMd)
 end

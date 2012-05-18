@@ -1,9 +1,16 @@
+require 'twitter'
+
 #returns array with appropriate information (file save path, title, album #, track #)
 def makeFilename(fileName, story=FALSE)
   fileOutput = Array.new
   splitName = fileName.split('.')
   #the title
-  fileOutput[1] = splitName[1].gsub('_', ' ')
+  if story
+    fileOutput[1] = splitName[0][7..-1].gsub('-', ' ')
+  else
+    fileOutput[1] = splitName[0][11..-1].gsub('-', ' ')
+  end
+  #puts fileOutput[1]
 
   if story
     #Track Number
@@ -33,7 +40,7 @@ def makeFilename(fileName, story=FALSE)
     day = 31 - fileOutput[3].to_i
     fileOutput[0] = OUTPUT_DIR + STORY_DIR + year.to_s + "-01-" + day.to_s + "-" + fileOutput[3].gsub(' ', '-') + ".md"
   else
-    fileOutput[0] = OUTPUT_DIR + MUSINGS_DIR + fileName
+    fileOutput[0] = OUTPUT_DIR + MUSINGS_DIR + fileName.gsub("\.html", "\.md")
   end
 
   return fileOutput
@@ -120,3 +127,6 @@ def stripSoundtrack(htmlString)
 
 end
 
+def postTweet(url)
+
+end
