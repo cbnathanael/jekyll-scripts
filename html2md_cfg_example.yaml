@@ -1,6 +1,8 @@
 #twitter keys
-twitter:
-  consumer_key: 'YOUR_CONSUMER_KEY'
-  consumer_secret: 'YOUR_CONSUMER_SECRET'
-  oauth_token: 'YOUR_OAUTH_TOKEN'
-  oath_token_secret: 'YOUR_OAUTH_TOKEN_SECRET'
+consumer_key: 'YOUR_CONSUMER_KEY'
+consumer_secret: 'YOUR_CONSUMER_SECRET'
+oauth_token: 'YOUR_OAUTH_TOKEN'
+oath_token_secret: 'YOUR_OAUTH_TOKEN_SECRET'
+
+#site url
+base_url: 'http://yoursite'
