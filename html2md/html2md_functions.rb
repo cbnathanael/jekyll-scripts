@@ -1,5 +1,7 @@
 require 'yaml'
-require 'twitter'
+require 'rubygems'
+require 'git'
+
 
 #grab yaml config
 CONFIG = YAML.load_file("html2md_cfg.yaml")
@@ -131,15 +133,12 @@ def stripSoundtrack(htmlString)
 
 end
 
-def postTweet(title, url)
-  Twitter.configure do |config|
-    config.consumer_key = CONFIG['consumer_key']
-    config.consumer_secret = CONFIG['consumer_secret']
-    config.oauth_token = CONFIG['oauth_token']
-    config.oauth_token_secret = CONFIG['oauth_token_secret']
+def newPostFile(title, url)
+
+  File.open('newPost.txt', 'w') do |md|
+    outputText = title + "\n"
+    outputText < url
+    md.puts(foo)
   end
 
-  #puts CONFIG['base_url'] + url
-  tweet = "A new post: " + title + " " + url 
-  Twitter.update(tweet)
 end
