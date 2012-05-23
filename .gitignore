@@ -2,4 +2,4 @@
 *.swp
 story/
 musings/
-html2md_cfg.yaml
+build_tweet_cfg.yaml

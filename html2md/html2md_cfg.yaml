@@ -1,0 +1,6 @@
+#everyone's favorite settings!
+
+output_dir: "/home/nphillips/Documents/Git/jekyll-scripts/html2md/" #"/home/nphillips/Documents/Sites/soundtrack/" #"/home/nphillips/Documents/Git/jekyll-scripts/html2md/" #"C:\\Sites\\jekyll-scripts\\"
+story_dir: "story/" #"story\\_posts\\"
+musings_dir: "musings/" #"musings\\_posts\\"
+

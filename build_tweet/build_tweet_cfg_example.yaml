@@ -6,3 +6,4 @@ oath_token_secret: 'YOUR_OAUTH_TOKEN_SECRET'
 
 #site url
 base_url: 'http://yoursite'
+git_base: '/path/to/your/repo'

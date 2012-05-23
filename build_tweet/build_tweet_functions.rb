@@ -1,4 +1,7 @@
-require './build_tweet_functions.rb'
+require 'yaml'
+require 'twitter'
+
+CONFIG = YAML.load_file("build_tweet_cfg.yaml")
 
 def postTweet(title, url)
   Twitter.configure do |config|
@@ -13,4 +16,3 @@ def postTweet(title, url)
   Twitter.update(tweet)
 end
 
-postTweet(ARGV[0])
