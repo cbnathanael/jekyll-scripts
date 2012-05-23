@@ -6,47 +6,49 @@ require 'git'
 #grab yaml config
 CONFIG = YAML.load_file("html2md_cfg.yaml")
 
-#returns array with appropriate information (file save path, title, album #, track #)
+#returns array with appropriate information (file save path, file name, title, album #, track #)
 def makeFilename(fileName, story=FALSE)
   fileOutput = Array.new
   splitName = fileName.split('.')
   #the title
   if story
-    fileOutput[1] = splitName[0][7..-1].gsub('-', ' ')
+    fileOutput[2] = splitName[0][7..-1].gsub('-', ' ')
   else
-    fileOutput[1] = splitName[0][11..-1].gsub('-', ' ')
+    fileOutput[2] = splitName[0][11..-1].gsub('-', ' ')
   end
   #puts fileOutput[1]
 
   if story
     #Track Number
-    fileOutput[3] = fileName[4,2]
+    fileOutput[4] = fileName[4,2]
 
     case fileName[1,2].to_i
     when 1
-      fileOutput[2] = "One"
+      fileOutput[3] = "One"
     when 2
-      fileOutput[2] = "Two"
+      fileOutput[3] = "Two"
     when 3
-      fileOutput[2] = "Three"
+      fileOutput[3] = "Three"
     when 4
-      fileOutput[2] = "Four"
+      fileOutput[3] = "Four"
     when 5
-      fileOutput[2] = "Five"
+      fileOutput[3] = "Five"
     when 6
-      fileOutput[2] = "Six"
+      fileOutput[3] = "Six"
     else
-      fileOutput[2] = "NA"
+      fileOutput[3] = "NA"
     end
 
     #filename format, to preserve track ordering needs to be in reverse date order. First track = "most recent" date.
     #Year indicates Album, Day indicates track (year = 2000-album#, day = 31-track#)
     #Ex: Album One, Track 1 = 1999-01-30-title.md
     year = 2000 - fileName[1,2].to_i
-    day = 31 - fileOutput[3].to_i
-    fileOutput[0] = OUTPUT_DIR + STORY_DIR + year.to_s + "-01-" + day.to_s + "-" + fileOutput[3].gsub(' ', '-') + ".md"
+    day = 31 - fileOutput[4].to_i
+    fileOutput[1] = year.to_s + "-01-" + day.to_s + "-" + fileOutput[2].gsub(' ', '-') + ".md"
+    fileOutput[0] = CONFIG['output_dir'] + CONFIG['story_dir'] + fileOutput[1] 
   else
-    fileOutput[0] = OUTPUT_DIR + MUSINGS_DIR + fileName.gsub("\.html", "\.md")
+    fileOutput[1] = fileName.gsub("\.html", "\.md")
+    fileOutput[0] = CONFIG['output_dir'] + CONFIG['musings_dir'] + fileOutput[1]
   end
 
   return fileOutput
@@ -63,13 +65,13 @@ def generateYaml(docInfo, story=FALSE)
   #track: 01
   #---
   yamlString = "---\n"
-  yamlString << "title: \"" + docInfo[1] + "\"\n"
+  yamlString << "title: \"" + docInfo[2] + "\"\n"
   yamlString << "layout: story\n"
   if story
     yamlString << "category: story\n"
-    yamlString << "permalink: /story/Album"+docInfo[2]+"/Track"+docInfo[3]+".html\n"
-    yamlString << "album: "+docInfo[2]+"\n"
-    yamlString << "track: "+docInfo[3]+"\n"
+    yamlString << "permalink: /story/Album"+docInfo[3]+"/Track"+docInfo[4]+".html\n"
+    yamlString << "album: "+docInfo[3]+"\n"
+    yamlString << "track: "+docInfo[4]+"\n"
   else
     yamlString << "category: musings\n"
   end
@@ -133,12 +135,30 @@ def stripSoundtrack(htmlString)
 
 end
 
-def newPostFile(title, url)
+def newPostFile(fileOutput, is_story)
 
-  File.open('newPost.txt', 'w') do |md|
-    outputText = title + "\n"
-    outputText < url
-    md.puts(foo)
+  url = "http://www.thesoundtrackseries.com/"
+
+  if is_story
+    url << "story/" + "Album" + fileOutput[3] + "/track" + fileOutput[4] + ".html"
+  else
+    url << "musings/" + fileOutput[1][0,4] + "/" + fileOutput[1][5,2] + "/" + fileOutput[2].gsub(' ', '-') + ".html"
   end
+
+  fName = CONFIG['output_dir'] + "/newPost.txt"
+  File.open(fName, 'w') do |md|
+    outputText = fileOutput[2] + "\n"
+    outputText << url
+    md.puts(outputText)
+  end
+
+end
+
+def gitCommit(gitDir, fileName)
+  
+  g = Git.init(gitDir)
+  g.add('.')
+  g.commit('Site Update: ' + fileName)
+  g.push
 
 end

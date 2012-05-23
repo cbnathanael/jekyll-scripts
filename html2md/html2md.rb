@@ -1,10 +1,4 @@
-
 require './html2md_functions.rb'
-
-OUTPUT_DIR  = "/home/nphillips/Documents/Git/jekyll-scripts/" #"C:\\Sites\\jekyll-scripts\\"
-STORY_DIR   = "story/" #"story\\_posts\\"
-MUSINGS_DIR = "musings/" #"musings\\_posts\\"
-
 
 fileInput = ARGV[0]
 #isolate filename
@@ -34,3 +28,6 @@ File.open(fileOutput[0], 'w') do |md|
   md.puts(newMd)
 end
 
+newPostFile(fileOutput, FILE_IS_STORY)
+
+gitCommit(CONFIG['output_dir'], fileOutput[1])
